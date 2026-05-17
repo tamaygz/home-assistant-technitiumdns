@@ -394,18 +394,21 @@ class TechnitiumDHCPDeviceDiagnosticSensor(CoordinatorEntity, SensorEntity):
         device_data = self._get_device_data()
         hostname = ""
         if device_data:
-            hostname = device_data.get("hostname", "")
+            raw_hostname = device_data.get("hostname")
+            if isinstance(raw_hostname, str):
+                hostname = raw_hostname
 
         # Determine a reasonable model name
-        if "raspberry" in hostname.lower() or "rpi" in hostname.lower():
+        hostname_lower = hostname.lower()
+        if "raspberry" in hostname_lower or "rpi" in hostname_lower:
             model = "Raspberry Pi"
-        elif "iphone" in hostname.lower() or "ipad" in hostname.lower():
+        elif "iphone" in hostname_lower or "ipad" in hostname_lower:
             model = "iOS Device"
-        elif "android" in hostname.lower():
+        elif "android" in hostname_lower:
             model = "Android Device"
-        elif "windows" in hostname.lower() or "pc" in hostname.lower():
+        elif "windows" in hostname_lower or "pc" in hostname_lower:
             model = "Windows PC"
-        elif "mac" in hostname.lower():
+        elif "mac" in hostname_lower:
             model = "Mac Computer"
         else:
             model = "Network Device"
