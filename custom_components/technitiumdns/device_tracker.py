@@ -106,13 +106,14 @@ async def async_setup_entry(hass, entry, async_add_entities):
                 
             _LOGGER.info("Created %d device trackers", len(device_trackers))
         else:
-            _LOGGER.info("No DHCP lease data available yet - device trackers will be created when leases are discovered")
+            _LOGGER.info("""No DHCP lease data available yet 
+                         - device trackers will be created when leases are discovered""")
         
         _LOGGER.info("Adding %d device tracker entities to Home Assistant", len(device_trackers))
         async_add_entities(device_trackers, True)
-        
+
         _LOGGER.info("TechnitiumDNS DHCP device tracker setup completed successfully: %d device trackers", len(device_trackers))
-        
+
     except Exception as e:
         _LOGGER.error("Could not initialize TechnitiumDNS DHCP tracking: %s", e, exc_info=True)
         raise ConfigEntryNotReady from e
