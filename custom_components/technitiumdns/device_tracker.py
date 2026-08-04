@@ -222,10 +222,10 @@ class TechnitiumDHCPCoordinator(DataUpdateCoordinator):
                         "ip_address": ip_address,
                         "mac_address": normalize_mac_address(mac_address),
                         "hostname": hostname,
-                        "client_id": lease.get("clientIdentifier", ""),
-                        "lease_expires": lease.get("leaseExpires"),
-                        "lease_obtained": lease.get("leaseObtained"),
-                        "scope": lease.get("scope", ""),
+                        "client_id": getattr(lease, "client_identifier", "") or "",
+                        "lease_expires": getattr(lease, "lease_expires", None),
+                        "lease_obtained": getattr(lease, "lease_obtained", None),
+                        "scope": getattr(lease, "scope", "") or "",
                         "type": lease_type,
                         "last_seen": None,  # Will be populated by DNS log query
                         "is_stale": False,  # Will be calculated based on last_seen or activity score
