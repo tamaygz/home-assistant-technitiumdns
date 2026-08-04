@@ -218,13 +218,17 @@ class TechnitiumDHCPCoordinator(DataUpdateCoordinator):
                         # _LOGGER.debug("Filtering out IP %s based on filter mode %s", ip_address, self.ip_filter_mode)
                         continue
                     
+                    # Get datetime fields and convert to ISO format strings for sensors
+                    lease_expires = getattr(lease, "lease_expires", None)
+                    lease_obtained = getattr(lease, "lease_obtained", None)
+                    
                     processed_lease = {
                         "ip_address": ip_address,
                         "mac_address": normalize_mac_address(mac_address),
                         "hostname": hostname,
                         "client_id": getattr(lease, "client_identifier", "") or "",
-                        "lease_expires": getattr(lease, "lease_expires", None),
-                        "lease_obtained": getattr(lease, "lease_obtained", None),
+                        "lease_expires": lease_expires.isoformat() if lease_expires else None,
+                        "lease_obtained": lease_obtained.isoformat() if lease_obtained else None,
                         "scope": getattr(lease, "scope", "") or "",
                         "type": lease_type,
                         "last_seen": None,  # Will be populated by DNS log query
